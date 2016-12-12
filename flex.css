@@ -1,0 +1,466 @@
+/**
+* Flex - 一个flex常用兼容处理	
+* @version v1.0.0
+* @link https://github.com/jiayisheji/flex
+* @author jiayi <690405541@qq.com>
+* @license MIT License, http://www.opensource.org/licenses/MIT
+*/
+/*
+    兼容性说明：
+    旧版本dispaly: box;
+    过渡版本dispaly: flexbox;
+    标准版本display: flex;
+
+    Android
+    2.3 支持旧版本 display:-webkit-box;
+    4.4 支持标准版本 display: flex;
+
+    IOS
+    6.1 支持旧版本 display:-webkit-box;
+    7.1 支持标准版本 display: flex;
+
+    PC
+    兼容ie10+
+*/
+
+/*
+    父级上使用
+*/
+.flex,.flex > .flex{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+/*
+    私有属性，无需使用
+    fix Flex bug
+*/
+.flex > * {
+    /**
+    父级设置了flex布局后，子元素就算是行内元素很多浏览器会把它当做inline-block或者block元素来用，
+    可以直接设置它的宽高，但是还是有些浏览器不支持，所以要设置行内元素的宽度，
+    还是手动设置一下它的display为inline-block或者block.
+    旧版的box item要求属性是块级结构，所以很多inline元素需要设置display：block等才能显示正常
+     */
+    display: block;
+    /**
+    flex-grow元素的子级会撑破父级的宽度，超出去
+    flex-grow元素设置overflow: hidden;
+     */
+    overflow: hidden;
+}
+/**
+    父级上使用
+    子元素从左到右排列（默认）
+ */
+.flex-dir-left{
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+/**
+    父级上使用
+    子元素从右到左排列
+ */
+.flex-dir-right{
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+    -webkit-box-pack: end;
+}
+/**
+    父级上使用
+    子元素从上到下排列
+ */
+.flex-dir-top{
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+/**
+    父级上使用
+    子元素从下到上排列
+ */
+.flex-dir-bottom{
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: column-reverse;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    -webkit-box-pack: end;
+}
+/**
+    父级上使用
+    子元素水平居左（默认）
+ */
+.flex-align-left{
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+/**
+    父级上使用
+    子元素水平居右
+ */
+.flex-align-right{
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+/**
+    父级上使用
+    子元素水平两端对齐
+ */
+.flex-align-justify{
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+/**
+    父级上使用
+    子元素水平居中
+ */
+.flex-align-center{
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+/**
+    父级上使用
+    子元素垂直顶部（默认）
+ */
+.flex-vertical-top{
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    -ms-grid-row-align: flex-start;
+    align-items: flex-start;
+}
+/**
+    父级上使用
+    子元素垂直底部
+ */
+.flex-vertical-bottom{
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    -ms-grid-row-align: flex-end;
+    align-items: flex-end;
+}
+/**
+    父级上使用
+    子元素垂直居中
+ */
+.flex-vertical-middle{
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    -ms-grid-row-align: center;
+    align-items: center;
+}
+/**
+    父级上使用
+    子元素垂直基线
+ */
+.flex-vertical-baseline{
+    -webkit-box-align: baseline;
+    -webkit-align-items: baseline;
+    -ms-flex-align: baseline;
+    -ms-grid-row-align: baseline;
+    align-items: baseline;
+}
+/**
+    父级上使用
+    子元素垂直拉伸
+ */
+.flex-vertical-stretch{
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    -ms-grid-row-align: stretch;
+    align-items: stretch;
+}
+/*
+    父级上使用
+    所有子元素均分父级宽度
+*/
+.flex-box-mean > *,
+/*
+    父级上使用
+    除一个以外其他，子元素均分剩余父级宽度
+*/
+.flex-box-first > *,
+/*
+    父级上使用
+    除最后一个以外其他，子元素均分剩余父级宽度
+*/
+.flex-box-last > *,
+/*
+    父级上使用
+    除一个和最后一个以外其他，子元素均分剩余父级宽度
+*/
+.flex-box-justify > *{
+    /*
+        旧版的使用比例伸缩布局时会导致盒子内容大小不等会导致无法‘等分’等布局。
+        这个时候需要设置width:0%;等把原始大小设置成0
+    */
+    width: 0;
+    height: auto;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+/**
+    私有属性，无需使用
+    辅助分配宽度属性使用
+ */
+.flex-box-first > :first-child,
+.flex-box-last > :last-child,
+.flex-box-justify > :first-child,
+.flex-box-justify > :last-child{
+    width: auto;
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+/*
+    父级上使用
+    子元素从上到下排列
+    所有子元素均分父级高度
+*/
+.flex-dir-top.flex-box-mean > *,
+/*
+    父级上使用
+    子元素从上到下排列
+    除一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-top.flex-box-first > *,
+/*
+    父级上使用
+    子元素从上到下排列
+    除最一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-top.flex-box-last > *,
+/*
+    父级上使用
+    子元素从上到下排列
+    除一个和最后一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-top.flex-box-justify > *,
+/*
+    父级上使用
+    子元素从下到上排列
+    所有子元素均分父级高度
+*/
+.flex-dir-bottom.flex-box-mean > *,
+/*
+    父级上使用
+    子元素从下到上排列
+    除一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-bottom.flex-box-first > *,
+/*
+    父级上使用
+    子元素从下到上排列
+    除最一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-bottom.flex-box-last > *,
+/*
+    父级上使用
+    子元素从下到上排列
+    除一个和最后一个以外其他，子元素均分剩余父级高度
+*/
+.flex-dir-bottom.flex-box-justify > *{
+    width: auto;
+    height: 0;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+/**
+    私有属性，无需使用
+    辅助分配高度属性使用
+ */
+.flex-dir-top.flex-box-first > :first-child,
+.flex-dir-top.flex-box-last > :last-child,
+.flex-dir-top.flex-box-justify > :first-child,
+.flex-dir-top.flex-box-justify > :last-child,
+.flex-dir-bottom.flex-box-first > :first-child,
+.flex-dir-bottom.flex-box-last > :last-child,
+.flex-dir-bottom.flex-box-justify > :first-child,
+.flex-dir-bottom.flex-box-justify > :last-child{
+    height: auto;
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+/*
+    子元素上使用
+    当前元素设为0等分
+*/
+.flex-box-0{
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+/*
+    子元素上使用
+    当前元素设为1等分
+*/
+.flex-box-1{
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+/*
+    子元素上使用
+    当前元素设为2等分
+*/
+.flex-box-2{
+    -webkit-box-flex: 2;
+    -webkit-flex-grow: 2;
+    -ms-flex-positive: 2;
+    flex-grow: 2;
+    -webkit-flex-shrink: 2;
+    -ms-flex-negative: 2;
+    flex-shrink: 2;
+}
+/*
+    子元素上使用
+    当前元素设为3等分
+*/
+.flex-box-3{
+    -webkit-box-flex: 3;
+    -webkit-flex-grow: 3;
+    -ms-flex-positive: 3;
+    flex-grow: 3;
+    -webkit-flex-shrink: 3;
+    -ms-flex-negative: 3;
+    flex-shrink: 3;
+}
+/*
+    子元素上使用
+    当前元素设为4等分
+*/
+.flex-box-4{
+    -webkit-box-flex: 4;
+    -webkit-flex-grow: 4;
+    -ms-flex-positive: 4;
+    flex-grow: 4;
+    -webkit-flex-shrink: 4;
+    -ms-flex-negative: 4;
+    flex-shrink: 4;
+}
+/*
+    子元素上使用
+    当前元素设为5等分
+*/
+.flex-box-5{
+    -webkit-box-flex: 5;
+    -webkit-flex-grow: 5;
+    -ms-flex-positive: 5;
+    flex-grow: 5;
+    -webkit-flex-shrink: 5;
+    -ms-flex-negative: 5;
+    flex-shrink: 5;
+}
+/*
+    子元素上使用
+    当前元素设为6等分
+*/
+.flex-box-6{
+    -webkit-box-flex: 6;
+    -webkit-flex-grow: 6;
+    -ms-flex-positive: 6;
+    flex-grow: 6;
+    -webkit-flex-shrink: 6;
+    -ms-flex-negative: 6;
+    flex-shrink: 6;
+}
+/*
+    子元素上使用
+    当前元素设为7等分
+*/
+.flex-box-7{
+    -webkit-box-flex: 7;
+    -webkit-flex-grow: 7;
+    -ms-flex-positive: 7;
+    flex-grow: 7;
+    -webkit-flex-shrink: 7;
+    -ms-flex-negative: 7;
+    flex-shrink: 7;
+}
+/*
+    子元素上使用
+    当前元素设为8等分
+*/
+.flex-box-8{
+    -webkit-box-flex: 8;
+    -webkit-flex-grow: 8;
+    -ms-flex-positive: 8;
+    flex-grow: 8;
+    -webkit-flex-shrink: 8;
+    -ms-flex-negative: 8;
+    flex-shrink: 8;
+}
+/*
+    子元素上使用
+    当前元素设为9等分
+*/
+.flex-box-9{
+    -webkit-box-flex: 9;
+    -webkit-flex-grow: 9;
+    -ms-flex-positive: 9;
+    flex-grow: 9;
+    -webkit-flex-shrink: 9;
+    -ms-flex-negative: 9;
+    flex-shrink: 9;
+}
+/*
+    子元素上使用
+    当前元素设为10等分
+*/
+.flex-box-10{
+    -webkit-box-flex: 10;
+    -webkit-flex-grow: 10;
+    -ms-flex-positive: 10;
+    flex-grow: 10;
+    -webkit-flex-shrink: 10;
+    -ms-flex-negative: 10;
+    flex-shrink: 10;
+}
